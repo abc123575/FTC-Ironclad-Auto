@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.pedroPathing;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -9,8 +9,8 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
-@TeleOp(name = "TELEOP_Final", group = "Drive")
-public class TELEOP_Final extends OpMode {
+@TeleOp(name = "babymode", group = "Drive")
+public class babymode extends OpMode {
 
     // --- Drive Motors ---
     private DcMotor FLmotor, FRmotor, BLmotor, BRmotor;
@@ -157,11 +157,12 @@ public class TELEOP_Final extends OpMode {
 
         // --- Gamepad2: Intake (Right Bumper) ---
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        if (gamepad2.right_bumper) {
+        if (gamepad2.right_bumper && gamepad2.right_trigger > 0) {
             intakeMotor.setPower((INTAKE_POWER) * -1);
         } else if (gamepad2.left_bumper) {
-            intakeMotor.setPower(INTAKE_POWER); // reverse if you want opposite spin
-        } else {
+            intakeMotor.setPower(INTAKE_POWER);
+        }
+        else {
             intakeMotor.setPower(0);
         }
 
