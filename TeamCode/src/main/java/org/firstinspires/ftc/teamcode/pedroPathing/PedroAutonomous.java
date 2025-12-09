@@ -59,17 +59,12 @@ public class PedroAutonomous extends OpMode {
 
         public PathChain Path1;
         public PathChain Path2;
-        public PathChain Path3;
 
         public Paths(Follower follower) {
-
             Path1 = follower
                     .pathBuilder()
                     .addPath(
-                            new BezierLine(
-                                    new Pose(56.000, 8.000),
-                                    new Pose(55.758, 48.000)
-                            )
+                            new BezierLine(new Pose(56.000, 8.000), new Pose(56.242, 60.848))
                     )
                     .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(180))
                     .build();
@@ -77,21 +72,7 @@ public class PedroAutonomous extends OpMode {
             Path2 = follower
                     .pathBuilder()
                     .addPath(
-                            new BezierLine(
-                                    new Pose(55.758, 48.000),
-                                    new Pose(91.879, 47.758)
-                            )
-                    )
-                    .setTangentHeadingInterpolation()
-                    .build();
-
-            Path3 = follower
-                    .pathBuilder()
-                    .addPath(
-                            new BezierLine(
-                                    new Pose(91.879, 47.758),
-                                    new Pose(63.273, 98.424)
-                            )
+                            new BezierLine(new Pose(56.242, 60.848), new Pose(120.000, 59.394))
                     )
                     .setTangentHeadingInterpolation()
                     .build();
@@ -110,21 +91,6 @@ public class PedroAutonomous extends OpMode {
                 if (!follower.isBusy()) {
                     follower.followPath(paths.Path2);
                     pathState = 2;
-                }
-                break;
-
-            case 2:
-                // Waiting for Path2 to finish
-                if (!follower.isBusy()) {
-                    follower.followPath(paths.Path3);
-                    pathState = 3;
-                }
-                break;
-
-            case 3:
-                // Waiting for Path3 to finish
-                if (!follower.isBusy()) {
-                    pathState = 4; // DONE
                 }
                 break;
 
