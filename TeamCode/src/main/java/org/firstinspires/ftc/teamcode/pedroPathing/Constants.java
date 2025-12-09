@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
+import com.pedropathing.control.PIDFCoefficients;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.ftc.FollowerBuilder;
@@ -12,6 +13,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.ConceptExploringIMUOrientation;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Constants {
@@ -20,6 +22,7 @@ public class Constants {
             .mass(9)
             .forwardZeroPowerAcceleration(-45.6)
             .lateralZeroPowerAcceleration(-65.5)
+            .translationalPIDFCoefficients(new PIDFCoefficients())
             ;
 
 
@@ -29,7 +32,7 @@ public class Constants {
     private void init(HardwareMap hwMap) {
 
         imu = hwMap.get(IMU.class, "imu");
-        RevHubOrientationOnRobot RevOrientation = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT, RevHubOrientationOnRobot.UsbFacingDirection.UP);
+        RevHubOrientationOnRobot RevOrientation = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT , RevHubOrientationOnRobot.UsbFacingDirection.UP);
     }
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)

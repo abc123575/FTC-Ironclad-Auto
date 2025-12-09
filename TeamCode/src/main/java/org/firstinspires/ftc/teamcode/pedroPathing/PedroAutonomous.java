@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 @Autonomous(name = "Pedro Pathing Autonomous1", group = "Autonomous")
 @Configurable
-public class PedroAutonomous1 extends OpMode {
+public class PedroAutonomous extends OpMode {
 
     private TelemetryManager panelsTelemetry;
     public Follower follower;
