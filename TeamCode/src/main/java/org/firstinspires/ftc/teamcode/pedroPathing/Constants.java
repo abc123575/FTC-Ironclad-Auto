@@ -22,8 +22,11 @@ public class Constants {
             .mass(9)
             .forwardZeroPowerAcceleration(-45.6)
             .lateralZeroPowerAcceleration(-65.5)
-            .translationalPIDFCoefficients(new PIDFCoefficients())
+            .translationalPIDFCoefficients(new PIDFCoefficients(0.06, 0.0, 0.0001, 0.025))
+            .headingPIDFCoefficients(new PIDFCoefficients(0.4, 0.0, 0.0001, 0.025))
+            .drivePIDFCoefficients(new PIDFCoefficients(0.5, 0.0, 0.001, 0.025))
             ;
+
 
 
 
@@ -57,7 +60,10 @@ public class Constants {
             .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD);
 
 
-    public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
+    public static PathConstraints pathConstraints = new PathConstraints(0.99,
+            100,
+            1,
+            1);
 
     public static Follower createFollower(HardwareMap hardwareMap) {
         return new FollowerBuilder(followerConstants, hardwareMap)
