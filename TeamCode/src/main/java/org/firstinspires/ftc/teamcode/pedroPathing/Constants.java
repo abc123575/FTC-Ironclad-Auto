@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
+import com.pedropathing.control.FilteredPIDFCoefficients;
 import com.pedropathing.control.PIDFCoefficients;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.FollowerConstants;
@@ -24,7 +25,7 @@ public class Constants {
             .lateralZeroPowerAcceleration(-65.5)
             .translationalPIDFCoefficients(new PIDFCoefficients(0.06, 0.0, 0.0001, 0.025))
             .headingPIDFCoefficients(new PIDFCoefficients(0.4, 0.0, 0.0001, 0.025))
-            .drivePIDFCoefficients(new PIDFCoefficients(0.5, 0.0, 0.001, 0.025))
+            .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.50, 0.00, 0.001, 0.025, 0.025))
             ;
 
 
@@ -35,7 +36,7 @@ public class Constants {
     private void init(HardwareMap hwMap) {
 
         imu = hwMap.get(IMU.class, "imu");
-        RevHubOrientationOnRobot RevOrientation = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT , RevHubOrientationOnRobot.UsbFacingDirection.UP);
+        RevHubOrientationOnRobot RevOrientation = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.FORWARD , RevHubOrientationOnRobot.UsbFacingDirection.UP);
     }
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
