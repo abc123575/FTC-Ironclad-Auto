@@ -24,7 +24,7 @@ public class SampleAutoPathing extends OpMode{
         DRIVE_STARTPOS_SHOOTPOS,
         SHOOT_PRELOAD,
         DRIVE_SHOOTPOS_PARK
-        }
+    }
 
     PathState pathstate;
 
