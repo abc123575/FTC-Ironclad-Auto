@@ -30,7 +30,7 @@ public class SampleAutoPathing extends OpMode{
 
     private final Pose startPoseL = new Pose(20.403022670025187, 123.14357682619648, Math.toRadians(138));
     private final Pose shootPoseL = new Pose(51.37291689,91.76526531, Math.toRadians(138));
-    private final Pose ballPoseL = new Pose(51.37291689, 63.13659359190556, Math.toRadians((138))
+    private final Pose ballPoseL = new Pose(51.37291689, 63.13659359190556, Math.toRadians(138));
 
     // declare variable name object
 
