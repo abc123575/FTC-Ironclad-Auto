@@ -22,8 +22,9 @@ public class SampleAutoPathing extends OpMode{
         // one state: drive
         // second state: attempt to score the artifact
         DRIVE_STARTPOS_SHOOTPOS,
-        SHOOT_PRELOAD
-    }
+        SHOOT_PRELOAD,
+        DRIVE_SHOOTPOS_PARK
+        }
 
     PathState pathstate;
 
@@ -34,12 +35,17 @@ public class SampleAutoPathing extends OpMode{
     // declare variable name object
 
     private PathChain driveStartLtoShootL;
+    private PathChain driveShootLtoBallL;
 
     public void buildPaths(){
         // put in coordinates for starting pose then for the ending pose
         driveStartLtoShootL = follower.pathBuilder()
                 .addPath(new BezierLine(startPoseL,shootPoseL))
                 .setLinearHeadingInterpolation(startPoseL.getHeading(),shootPoseL.getHeading())
+                .build();
+        driveShootLtoBallL = follower.pathBuilder()
+                .addPath(new BezierLine(shootPoseL, ballPoseL))
+                .setTangentHeadingInterpolation()
                 .build();
     }
 
@@ -53,6 +59,10 @@ public class SampleAutoPathing extends OpMode{
                 if (!follower.isBusy()) {
                     telemetry.addLine("Done path 1");
                 }
+                setPathstate(PathState.DRIVE_SHOOTPOS_PARK);
+                break;
+            case DRIVE_SHOOTPOS_PARK:
+                follower.followPath(driveShootLtoBallL, true);
                 break;
             default:
                 telemetry.addLine("no state commanded");
