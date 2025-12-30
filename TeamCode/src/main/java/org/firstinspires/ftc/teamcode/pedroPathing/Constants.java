@@ -21,36 +21,18 @@ public class Constants {
 
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(9)
-            .forwardZeroPowerAcceleration(-45.6)
-            .lateralZeroPowerAcceleration(-65.5)
-            .translationalPIDFCoefficients(new PIDFCoefficients(0.06, 0.0, 0.0001, 0.025))
-            .headingPIDFCoefficients(new PIDFCoefficients(0.4, 0.0, 0.0001, 0.025))
-            .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.50, 0.00, 0.001, 0.025, 0.025))
             ;
-
-
-
-
-    private IMU imu;
-
-    private void init(HardwareMap hwMap) {
-
-        imu = hwMap.get(IMU.class, "imu");
-        RevHubOrientationOnRobot RevOrientation = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.FORWARD , RevHubOrientationOnRobot.UsbFacingDirection.UP);
-    }
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
             .rightFrontMotorName("FRmotor")
             .rightRearMotorName("BRmotor")
             .leftRearMotorName("BLmotor")
             .leftFrontMotorName("FLmotor")
-            .leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .xVelocity(48.88)
-            .yVelocity(37.97);
-
+            .leftFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .leftRearMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .rightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .rightRearMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .xVelocity(55.85);
     public static PinpointConstants localizerConstants = new PinpointConstants()
             .forwardPodY(6.75)
             .strafePodX(3.5)
