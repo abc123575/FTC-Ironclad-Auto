@@ -40,6 +40,8 @@ public class PedroPathTestV3 extends OpMode{
     private PathChain driveStartLtoShootL;
     private PathChain driveShootLtoNextL;
 
+    private PathChain driveNextLtoFinalPoseL;
+
 
     // builds the actual paths from pose to pose
     // builds the bezier curve
@@ -55,6 +57,8 @@ public class PedroPathTestV3 extends OpMode{
                 .addPath(new BezierLine(shootPoseL, nextPoseL))
                 .setLinearHeadingInterpolation(shootPoseL.getHeading(), nextPoseL.getHeading())
                 .build();
+
+
     }
 
     // starts the state machine

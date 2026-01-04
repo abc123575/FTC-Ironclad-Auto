@@ -16,7 +16,6 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptExploringIMUOrientation;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
 public class Constants {
 
     public static FollowerConstants followerConstants = new FollowerConstants()
