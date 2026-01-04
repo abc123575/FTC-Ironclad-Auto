@@ -9,10 +9,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.pedropathing.util.Timer;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
-import org.firstinspires.ftc.teamcode.pedroPathing.MyAutoV2;
-@Autonomous
+@Autonomous(name = "PedroPathTestV2", group = "Autonomous")
 @Configurable
-public class SampleAutoPathing extends OpMode{
+public class PedroPathTestV2 extends OpMode{
     private Follower follower;
     private Timer pathTimer, opModeTimer;
 
@@ -23,34 +22,27 @@ public class SampleAutoPathing extends OpMode{
         // second state: attempt to score the artifact
         DRIVE_STARTPOS_SHOOTPOS,
         SHOOT_PRELOAD,
-        DRIVE_SHOOTPOS_PARK
-        }
+    }
 
-    PathState pathstate;
+    PathState pathstate; // Declare object
 
-    //pedro sucks
-
-    private final Pose startPoseL = new Pose(20.403022670025187, 123.14357682619648, Math.toRadians(138));
-    private final Pose shootPoseL = new Pose(51.37291689,91.76526531, Math.toRadians(138));
-    private final Pose ballPoseL = new Pose(51.37291689, 63.13659359190556, Math.toRadians(138));
-
+    // declare all poses
+    private final Pose startPoseL = new Pose(20.83492496589358, 121.35334242837655, Math.toRadians(135));
+    private final Pose shootPoseL = new Pose(61.813,99.224, Math.toRadians(180));
     // declare variable name object
 
     private PathChain driveStartLtoShootL;
-    private PathChain driveShootLtoBallL;
 
+    // builds the actual paths from pose to pose
     public void buildPaths(){
         // put in coordinates for starting pose then for the ending pose
         driveStartLtoShootL = follower.pathBuilder()
                 .addPath(new BezierLine(startPoseL,shootPoseL))
                 .setLinearHeadingInterpolation(startPoseL.getHeading(),shootPoseL.getHeading())
                 .build();
-        driveShootLtoBallL = follower.pathBuilder()
-                .addPath(new BezierLine(shootPoseL, ballPoseL))
-                .setTangentHeadingInterpolation()
-                .build();
     }
 
+    // starts the state machine
     public void statePathUpdate(){
         switch(pathstate){
             case DRIVE_STARTPOS_SHOOTPOS:
@@ -59,39 +51,36 @@ public class SampleAutoPathing extends OpMode{
                 break;
             case SHOOT_PRELOAD:
                 if (!follower.isBusy()) {
+                    // TO DO ADD LOGIC FOR CATAPULT INTAKE WHEEL
                     telemetry.addLine("Done path 1");
                 }
-                setPathstate(PathState.DRIVE_SHOOTPOS_PARK);
-                break;
-            case DRIVE_SHOOTPOS_PARK:
-                follower.followPath(driveShootLtoBallL, true);
-                break;
             default:
                 telemetry.addLine("no state commanded");
                 break;
         }
     }
 
-
-    public void setPathstate(PathState newState) {
+    // Helps transition from path to path. Helper function
+     public void setPathstate(PathState newState) {
         pathstate = newState;
-        pathTimer.resetTimer();
+        pathTimer.resetTimer();  // resets the timer for every new path
     }
 
 
     @Override
-    public void init(){
+    public void init(){  // the start init button
         pathstate = PathState.DRIVE_STARTPOS_SHOOTPOS;
         pathTimer = new Timer();
         opModeTimer = new Timer();
         follower = Constants.createFollower(hardwareMap);
-        // TODO add in any other init mechinisms
+        // TODO add in any other init mechanisms ( LIMELIGHT, CATAPULTS)
 
         buildPaths();
         follower.setPose(startPoseL);
 
     }
 
+    // resets the timer for opMode
     public void start() {
         opModeTimer.resetTimer();
         setPathstate(pathstate);
