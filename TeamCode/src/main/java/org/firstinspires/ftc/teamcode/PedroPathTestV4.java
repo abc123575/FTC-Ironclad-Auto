@@ -86,7 +86,7 @@ public class PedroPathTestV4 extends OpMode{
                 break;
 
             default:
-                telemetry.addLine("no state commanded");
+                telemetry.addLine("no state commanded")     ````````[]
                 break;
         }
     }
