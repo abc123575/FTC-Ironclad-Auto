@@ -104,7 +104,7 @@ public class PedroPathTestV4 extends OpMode{
         pathTimer = new Timer();
         opModeTimer = new Timer();
         follower = Constants.createFollower(hardwareMap);
-        // TODO add in any other init mechanweisms
+        // TODO add in any other init mechanisms
 
         buildPaths();
         follower.setPose(startPoseL);
