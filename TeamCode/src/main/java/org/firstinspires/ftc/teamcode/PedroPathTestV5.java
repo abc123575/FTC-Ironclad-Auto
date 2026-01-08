@@ -10,9 +10,9 @@ import com.pedropathing.util.Timer;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "PedroPathTestV4", group = "Autonomous")
+@Autonomous(name = "PedroPathTestV5", group = "Autonomous")
 @Configurable
-public class PedroPathTestV4 extends OpMode{
+public class PedroPathTestV5 extends OpMode{
     private Follower follower;
     private Timer pathTimer, opModeTimer;
 
@@ -71,7 +71,7 @@ public class PedroPathTestV4 extends OpMode{
                     setPathstate(PathState.DRIVE_SHOOTPOS_PARK);
                 }
                 break;
-                // check iss follower done it's path and if that 5 seconds has elapsed
+            // check iss follower done it's path and if that 5 seconds has elapsed
             case DRIVE_SHOOTPOS_PARK:
                 if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 5) {
                     follower.followPath(driveBalltoShootingPoseL, true);
@@ -118,9 +118,6 @@ public class PedroPathTestV4 extends OpMode{
 
     @Override
     public void loop(){
-        telemetry.addData("heading(rad)", follower.getPose().getHeading());
-        telemetry.addData("heading(deg)", Math.toDegrees(follower.getPose().getHeading()));
-        telemetry.update();
         follower.update();
         statePathUpdate();
 
