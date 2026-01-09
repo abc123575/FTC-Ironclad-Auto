@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -28,6 +29,8 @@ public class TELEOP_Final extends OpMode {
     private boolean fieldCentric = false;
     private boolean backPrev = false;
     private boolean yPrev = false;
+    private CRServo torque1;
+    private CRServo torque2;
 
     private static final double DEADBAND = 0.05;
     private static final double ROT_SCALE = 0.8;
@@ -49,6 +52,9 @@ public class TELEOP_Final extends OpMode {
         BLmotor.setDirection(DcMotorSimple.Direction.REVERSE);
         FRmotor.setDirection(DcMotorSimple.Direction.FORWARD);
         BRmotor.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        torque1 = hardwareMap.get(CRServo.class, "torque1");
+        torque2 = hardwareMap.get(CRServo.class, "torque2");
 
         for (DcMotor m : new DcMotor[]{FLmotor, FRmotor, BLmotor, BRmotor}) {
             m.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -171,6 +177,16 @@ public class TELEOP_Final extends OpMode {
             kickstandMotor.setPower(KICKSTAND_POWER);
         } else {
             kickstandMotor.setPower(0);
+        }
+
+        // Gamepad 2: Kick Stand
+
+        if (gamepad2.a) {
+            torque1.setPower(-1.0);  // left
+            torque2.setPower(-1.0);  // left
+        } else {
+            torque1.setPower(0.0);
+            torque2.setPower(0.0);
         }
 
         // --- Telemetry ---

@@ -10,9 +10,9 @@ import com.pedropathing.util.Timer;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "PedroPathTestV5", group = "Autonomous")
+@Autonomous(name = "PedroPathTestV6", group = "Autonomous")
 @Configurable
-public class PedroPathTestV5 extends OpMode{
+public class PedroPathTestV6 extends OpMode{
     private Follower follower;
     private Timer pathTimer, opModeTimer;
 
@@ -32,14 +32,14 @@ public class PedroPathTestV5 extends OpMode{
     //pedro sucks
 
     private final Pose startPoseL = new Pose(20.403022670025187, 123.14357682619648, Math.toRadians(135));
-    private final Pose shootPoseL = new Pose(60,84, Math.toRadians(180));
-    private final Pose ballPoseL = new Pose(12, 84, Math.toRadians(180));
-    private final Pose shootingPoseL = new Pose(36,108,Math.toRadians(135));
+    private final Pose shootPoseL = new Pose(60,84, Math.toRadians(135));
+    private final Pose ballPoseL = new Pose(12, 84, Math.toRadians(90));
+    private final Pose shootingPoseL = new Pose(36,108,Math.toRadians(90));
 
     // declare variable name object
     // make sure paths are chained together
 
-    private PathChain driveStartLtoShootL,driveShootLtoBallL, driveBalltoShootingPoseL;
+    private PathChain driveStartLtoShootL,driveShootLtoBallL;
     public void buildPaths(){
         // put in coordinates for starting pose then for the ending pose
         driveStartLtoShootL = follower.pathBuilder()
@@ -49,10 +49,6 @@ public class PedroPathTestV5 extends OpMode{
         driveShootLtoBallL = follower.pathBuilder()
                 .addPath(new BezierLine(shootPoseL, ballPoseL))
                 .setLinearHeadingInterpolation(shootPoseL.getHeading(),ballPoseL.getHeading())
-                .build();
-        driveBalltoShootingPoseL = follower.pathBuilder()
-                .addPath(new BezierLine(ballPoseL, shootingPoseL))
-                .setLinearHeadingInterpolation(ballPoseL.getHeading(),shootingPoseL.getHeading())
                 .build();
 
     }
@@ -74,14 +70,8 @@ public class PedroPathTestV5 extends OpMode{
             // check iss follower done it's path and if that 5 seconds has elapsed
             case DRIVE_SHOOTPOS_PARK:
                 if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 5) {
-                    follower.followPath(driveBalltoShootingPoseL, true);
                     telemetry.addLine("Done path2 ");
                     setPathstate(PathState.DRIVE_SHOOT);
-                }
-                break;
-            case DRIVE_SHOOT:
-                if (!follower.isBusy()) {
-                    telemetry.addLine("Done path 3 ");
                 }
                 break;
 
