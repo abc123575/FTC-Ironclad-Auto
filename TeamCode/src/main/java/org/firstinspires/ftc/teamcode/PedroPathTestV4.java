@@ -38,7 +38,6 @@ public class PedroPathTestV4 extends OpMode{
 
     // declare variable name object
     // make sure paths are chained together
-
     private PathChain driveStartLtoShootL,driveShootLtoBallL, driveBalltoShootingPoseL;
     public void buildPaths(){
         // put in coordinates for starting pose then for the ending pose
