@@ -44,7 +44,7 @@ scorePreload.setConstantInterpolation(startPose.getHeading()); */
 
 
         /* This is our scorePickup1 PathChain. We are using a single path with a BezierLine, which is a straight line. */
-            scorePickup1 = follower.pathBuilder()
+        scorePickup1 = follower.pathBuilder()
         .addPath(new BezierLine(pickup1Pose,scorePose))
         .setLinearHeadingInterpolation(pickup1Pose.getHeading(), scorePose.getHeading())
         .build();
