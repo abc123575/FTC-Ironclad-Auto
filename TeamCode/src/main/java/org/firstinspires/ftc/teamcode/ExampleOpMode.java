@@ -52,6 +52,7 @@ scorePreload.setConstantInterpolation(startPose.getHeading()); */
         /* This is our grabPickup2 PathChain. We are using a single path with a BezierLine, which is a straight line. */
 
         grabPickup2 = follower.pathBuilder()
+        .addPath(new BezierLine(scorePose, pickup2Pose))
         .setLinearHeadingInterpolation(scorePose.getHeading(), pickup2Pose.getHeading())
         .build();
 
@@ -59,11 +60,6 @@ scorePreload.setConstantInterpolation(startPose.getHeading()); */
         scorePickup2 = follower.pathBuilder()
         .addPath(new BezierLine(pickup2Pose, scorePose))
         .setLinearHeadingInterpolation(pickup2Pose.getHeading(), scorePose.getHeading())
-        .build();
-
-        grabPickup3 = follower.pathBuilder()
-        .addPath(new BezierLine(scorePose, pickup3Pose))
-        .setLinearHeadingInterpolation(scorePose.getHeading(), pickup3Pose.getHeading())
         .build();
 
 
@@ -193,7 +189,6 @@ pathTimer = new Timer();
 opmodeTimer = new Timer();
 opmodeTimer.resetTimer();
 
-
 follower = Constants.createFollower(hardwareMap);
 buildPaths();
 follower.setStartingPose(startPose);
@@ -205,7 +200,6 @@ follower.setStartingPose(startPose);
 public void init_loop() {}
 
 /** This method is called once at the start of the OpMode.
-      * It runs all the setup actions, including building paths and starting the path system **/
         @Override
 public void start() {
 opmodeTimer.resetTimer();

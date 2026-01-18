@@ -166,13 +166,6 @@ public class TELEOP_Final extends OpMode {
         }
 
 
-        // --- Gamepad2: Kickstand (Left Bumper) ---
-        if (gamepad2.left_bumper) {
-            kickstandMotor.setPower(KICKSTAND_POWER);
-        } else {
-            kickstandMotor.setPower(0);
-        }
-
         // --- Telemetry ---
         telemetry.addLine("Drive:");
         telemetry.addData("Field Centric", fieldCentric);
@@ -188,7 +181,7 @@ public class TELEOP_Final extends OpMode {
         telemetry.addData("Intake Power", intakeMotor.getPower());
 
         telemetry.addLine("\nKickstand:");
-        telemetry.addData("Left Bumper", gamepad2.left_bumper);
+        telemetry.addData("]Left Bumper", gamepad2.left_bumper);
         telemetry.addData("Kickstand Power", kickstandMotor.getPower());
 
         telemetry.update();
