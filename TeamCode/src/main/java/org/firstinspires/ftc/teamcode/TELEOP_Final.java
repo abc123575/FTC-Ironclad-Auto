@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -12,6 +13,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 @TeleOp(name = "TELEOP_Final", group = "Drive")
 public class TELEOP_Final extends OpMode {
+    // --- Pivot Servo ---
+    private Servo armServo;
 
     // --- Drive Motors ---
     private DcMotor FLmotor, FRmotor, BLmotor, BRmotor;
@@ -34,6 +37,10 @@ public class TELEOP_Final extends OpMode {
 
     private static final double DEADBAND = 0.05;
     private static final double ROT_SCALE = 0.8;
+    private static final double SERVO_SPEED = 0.01;
+    private double servoPos = 0.5;
+
+
 
     // --- Power Constants ---
     private static final double LAUNCH_POWER = 1.0 ;
@@ -53,8 +60,12 @@ public class TELEOP_Final extends OpMode {
         FRmotor.setDirection(DcMotorSimple.Direction.FORWARD);
         BRmotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        torque1 = hardwareMap.get(CRServo.class, "torque1");
-        torque2 = hardwareMap.get(CRServo.class, "torque2");
+        torque1 = hardwareMap.get(CRServo.class, "servo1");
+        torque2 = hardwareMap.get(CRServo.class, "servo2");
+        armServo = hardwareMap.get(Servo.class, "testServo");
+        armServo.setPosition(servoPos);
+
+
 
         for (DcMotor m : new DcMotor[]{FLmotor, FRmotor, BLmotor, BRmotor}) {
             m.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -149,23 +160,39 @@ public class TELEOP_Final extends OpMode {
         BRmotor.setPower(br);
 
         // --- Gamepad2: Launcher (Right Trigger) ---
-        if (gamepad2.right_trigger > 0.1) {
+        if (gamepad1.right_trigger > 0.1) {
             LLaunch.setPower(LAUNCH_POWER);
             RLaunch.setPower(LAUNCH_POWER);
-        } else if (gamepad2.left_trigger > 0.1) {
+        } else if (gamepad1.left_trigger > 0.1) {
             LLaunch.setPower(-LAUNCH_POWER); // reverse if you want opposite spin
             RLaunch.setPower(-LAUNCH_POWER);
         } else {
             LLaunch.setPower(0);
             RLaunch.setPower(0);
         }
+        if (gamepad1.right_bumper) {
+            servoPos += SERVO_SPEED;
+        }
+
+// Move backward while holding left bumper
+        if (gamepad1.left_bumper) {
+            servoPos -= SERVO_SPEED;
+        }
+
+        // Clamp so it never goes past servo limits
+        servoPos = Math.max(0.0, Math.min(1.0, servoPos));
+
+        armServo.setPosition(servoPos);
+
+        telemetry.addData("Servo Pos", servoPos);
+        telemetry.update();
 
 
         // --- Gamepad2: Intake (Right Bumper) ---
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        if (gamepad2.right_bumper) {
+        if (gamepad1.right_bumper) {
             intakeMotor.setPower((INTAKE_POWER) * -1);
-        } else if (gamepad2.left_bumper) {
+        } else if (gamepad1.left_bumper) {
             intakeMotor.setPower(INTAKE_POWER); // reverse if you want opposite spin
         } else {
             intakeMotor.setPower(0);
@@ -173,7 +200,7 @@ public class TELEOP_Final extends OpMode {
 
 
         // --- Gamepad2: Kickstand (Left Bumper) ---
-        if (gamepad2.left_bumper) {
+        if (gamepad1.left_bumper) {
             kickstandMotor.setPower(KICKSTAND_POWER);
         } else {
             kickstandMotor.setPower(0);
@@ -181,7 +208,7 @@ public class TELEOP_Final extends OpMode {
 
         // Gamepad 2: Kick Stand
 
-        if (gamepad2.a) {
+        if (gamepad1.a) {
             torque1.setPower(-1.0);  // left
             torque2.setPower(-1.0);  // left
         } else {
@@ -195,16 +222,16 @@ public class TELEOP_Final extends OpMode {
         telemetry.addData("Heading (deg)", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
 
         telemetry.addLine("\nLauncher:");
-        telemetry.addData("Right Trigger", gamepad2.right_trigger);
+        telemetry.addData("Right Trigger", gamepad1.right_trigger);
         telemetry.addData("LLaunch Power", LLaunch.getPower());
         telemetry.addData("RLaunch Power", RLaunch.getPower());
 
         telemetry.addLine("\nIntake:");
-        telemetry.addData("Right Bumper", gamepad2.right_bumper);
+        telemetry.addData("Right Bumper", gamepad1.right_bumper);
         telemetry.addData("Intake Power", intakeMotor.getPower());
 
         telemetry.addLine("\nKickstand:");
-        telemetry.addData("Left Bumper", gamepad2.left_bumper);
+        telemetry.addData("Left Bumper", gamepad1.left_bumper);
         telemetry.addData("Kickstand Power", kickstandMotor.getPower());
 
         telemetry.update();
