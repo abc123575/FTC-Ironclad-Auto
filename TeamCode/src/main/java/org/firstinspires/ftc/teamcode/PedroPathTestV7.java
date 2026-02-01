@@ -12,9 +12,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.Mechanism.Fling_Logic;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "PedroPathTestV5", group = "Autonomous")
+@Autonomous(name = "PedroPathTestV7", group = "Autonomous")
 @Configurable
-public class PedroPathTestV5 extends OpMode{
+public class PedroPathTestV7 extends OpMode{
     private Follower follower;
     private Timer pathTimer, opModeTimer;
 
@@ -79,15 +79,15 @@ public class PedroPathTestV5 extends OpMode{
             // check iss follower done it's path and if that 5 seconds has elapsed
             case DRIVE_SHOOTPOS_PARK:
                 if (!follower.isBusy()){
-                        follower.followPath(driveBalltoShootingPoseL, true);
-                        telemetry.addLine("Done path2 ");
-                        setPathstate(PathState.DRIVE_SHOOT);
+                    follower.followPath(driveBalltoShootingPoseL, true);
+                    telemetry.addLine("Done path2 ");
+                    setPathstate(PathState.DRIVE_SHOOT);
                 }
                 break;
             case DRIVE_SHOOT:
                 if (!follower.isBusy()) {
                     if (!shooter.isBusy())
-                         telemetry.addLine("Done path 3 ");
+                        telemetry.addLine("Done path 3 ");
                 }
                 break;
 
