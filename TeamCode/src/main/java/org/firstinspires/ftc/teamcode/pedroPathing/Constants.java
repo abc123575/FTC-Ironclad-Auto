@@ -27,7 +27,7 @@ public class Constants {
             .headingPIDFCoefficients(new PIDFCoefficients(2, 0.0, 0.001, 0.0))
             .useSecondaryHeadingPIDF (true)
             .secondaryHeadingPIDFCoefficients(new PIDFCoefficients(1, 0,0.01,0))
-            .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.5, 0, 0.001, 0.6, 0.025))
+            .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.5, 0, 0.009, 0.6, 0.025))
             .useSecondaryDrivePIDF(true)
             .secondaryDrivePIDFCoefficients(new FilteredPIDFCoefficients(0.015, 0,0.1, 0.6,0))
             ;
@@ -61,7 +61,7 @@ public class Constants {
 
     public static PathConstraints pathConstraints = new PathConstraints(0.99,
             100,
-            1,
+            2,
             1);
 
     public static Follower createFollower(HardwareMap hardwareMap) {
