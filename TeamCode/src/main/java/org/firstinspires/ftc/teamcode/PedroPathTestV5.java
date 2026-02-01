@@ -68,7 +68,7 @@ public class PedroPathTestV4 extends OpMode{
                     setPathstate(PathState.DRIVE_SHOOTPOS_PARK);
                 }
                 break;
-                // check iss follower done it's path and if that 5 seconds has elapsed
+            // check iss follower done it's path and if that 5 seconds has elapsed
             case DRIVE_SHOOTPOS_PARK:
                 if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 5) {
                     follower.followPath(driveBalltoShootingPoseL, true);
