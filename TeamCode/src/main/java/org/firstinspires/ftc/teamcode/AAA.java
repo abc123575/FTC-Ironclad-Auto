@@ -45,7 +45,7 @@ public class AAA extends OpMode {
         panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 
         follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(new Pose(72, 8, Math.toRadians(90)));
+        follower.setStartingPose(new Pose(56.000, 8.000, Math.toRadians(90)));
 
         pathTimer = new ElapsedTime();
         paths = new Paths(follower); // Build paths
@@ -173,16 +173,25 @@ public class AAA extends OpMode {
                 }
                 break;
             case 10:
+                // first time in this state
                 LLaunch.setPower(1);
                 RLaunch.setPower(1);
+
                 pathTimer.reset();
+                pathState = 11;
+                break;
+
+            case 11:
+                // wait 0.5 seconds at full power
                 if (pathTimer.seconds() >= 0.5) {
+
+                    // reverse arms
                     LLaunch.setPower(-1);
                     RLaunch.setPower(-1);
-                }
-                requestOpModeStop();
-                pathState = -1;
 
+                    requestOpModeStop();
+                    pathState = -1;
+                }
                 break;
         }
         return pathState;
