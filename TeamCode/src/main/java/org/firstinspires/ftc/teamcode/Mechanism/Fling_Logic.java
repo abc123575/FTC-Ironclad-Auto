@@ -52,6 +52,7 @@ public class Fling_Logic {
         switch (flingState) {
             case DELAY:
                 if (stateTimer.seconds() > 1) {
+                    stateTimer.reset();
                     flingState = FlingState.IDLE;
                 }
                 break;
@@ -59,7 +60,7 @@ public class Fling_Logic {
                 if (ARMS_DOWN < -0) {
                     LLaunch.setPower(ARMS_UP);
                     RLaunch.setPower(ARMS_DOWN);
-                    if (stateTimer.seconds() > 5) {
+                    if (stateTimer.seconds() > 1) {
                         stateTimer.reset();
                         flingState = FlingState.SPIN_UP;
                     }
@@ -68,11 +69,9 @@ public class Fling_Logic {
                 }
                 break;
             case SPIN_UP:
-                LLaunch.setPower(ARMS_DOWN);
-                RLaunch.setPower(ARMS_UP);
-                intakeMotor.setPower(INTAKE_REVERSE);
+                intakeMotor.setPower(-1);
                 if (stateTimer.seconds() > INTAKE_TIME) {
-                    intakeMotor.setPower(INTAKE_OFF);
+                    intakeMotor.setPower(INTAKE_ON);
 
                     stateTimer.reset();
                     flingState = FlingState.END;
@@ -80,8 +79,8 @@ public class Fling_Logic {
                 break;
                 // ADD REVERSE if there are more or if there exists more using distance sensor
             case END:
-                LLaunch.setPower(ARMS_UP);
-                RLaunch.setPower(ARMS_DOWN);
+                LLaunch.setPower(ARMS_DOWN);
+                RLaunch.setPower(ARMS_UP);
                 if (stateTimer.seconds() > ARMS_TIME) {
                     LLaunch.setPower(ARMS_DOWN);
                     RLaunch.setPower(ARMS_UP);
