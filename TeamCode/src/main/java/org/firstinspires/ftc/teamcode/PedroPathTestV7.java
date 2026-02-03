@@ -7,6 +7,7 @@ import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.pedropathing.util.Timer;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Mechanism.Fling_Logic;
@@ -57,6 +58,7 @@ public class PedroPathTestV7 extends OpMode{
                 .addPath(new BezierLine(ballPoseL, shootingPoseL))
                 .setLinearHeadingInterpolation(ballPoseL.getHeading(),shootingPoseL.getHeading())
                 .build();
+
 
     }
 

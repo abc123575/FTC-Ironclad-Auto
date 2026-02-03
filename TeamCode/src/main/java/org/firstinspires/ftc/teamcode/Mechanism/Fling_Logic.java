@@ -80,11 +80,11 @@ public class Fling_Logic {
                 break;
                 // ADD REVERSE if there are more or if there exists more using distance sensor
             case END:
-                LLaunch.setPower(ARMS_DOWN);
-                RLaunch.setPower(ARMS_UP);
+                LLaunch.setPower(ARMS_UP);
+                RLaunch.setPower(ARMS_DOWN);
                 if (stateTimer.seconds() > ARMS_TIME) {
-                    LLaunch.setPower(ARMS_UP);
-                    RLaunch.setPower(ARMS_DOWN);
+                    LLaunch.setPower(ARMS_DOWN);
+                    RLaunch.setPower(ARMS_UP);
 
                     stateTimer.reset();
                 }
