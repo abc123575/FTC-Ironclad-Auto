@@ -11,8 +11,8 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
-@TeleOp(name = "TELEOP_Final", group = "Drive")
-public class TELEOP_Final extends OpMode {
+@TeleOp(name = "TELEOP_FINAL2", group = "Drive")
+public class TELEOP_FINAL2 extends OpMode {
     // --- Pivot Servo ---
     private CRServo armServo;
 
@@ -23,7 +23,7 @@ public class TELEOP_Final extends OpMode {
     private DcMotor LLaunch, RLaunch;
 
     // --- Intake + Kickstand Motors ---
-    private DcMotor intakeMotor, kickstandMotor;
+    private DcMotor intakeMotor;
 
     // --- IMU ---
     private IMU imu;
@@ -35,15 +35,13 @@ public class TELEOP_Final extends OpMode {
 
     private static final double DEADBAND = 0.05;
     private static final double ROT_SCALE = 0.8;
-    private static final double SERVO_SPEED = 0.01;
-    private double servoPos = 0.5;
+    private static final double SERVO_SPEED = .5;
 
 
 
     // --- Power Constants ---
     private static final double LAUNCH_POWER = 1.0 ;
     private static final double INTAKE_POWER = 1.0;
-    private static final double KICKSTAND_POWER = 0.8;
 
     @Override
     public void init() {
@@ -79,12 +77,10 @@ public class TELEOP_Final extends OpMode {
 
         // --- Intake + Kickstand ---
         intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor");
-        kickstandMotor = hardwareMap.get(DcMotor.class, "kickstand_motor");
 
         intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        kickstandMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        for (DcMotor m : new DcMotor[]{intakeMotor, kickstandMotor}) {
+        for (DcMotor m : new DcMotor[]{intakeMotor}) {
             m.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             m.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
@@ -175,8 +171,6 @@ public class TELEOP_Final extends OpMode {
         }
 
 
-        telemetry.addData("Servo Pos", servoPos);
-        telemetry.update();
 
 
         // --- Gamepad2: Intake (Right Bumper) ---
@@ -211,7 +205,6 @@ public class TELEOP_Final extends OpMode {
 
         telemetry.addLine("\nKickstand:");
         telemetry.addData("Left Bumper", gamepad1.left_bumper);
-        telemetry.addData("Kickstand Power", kickstandMotor.getPower());
 
         telemetry.update();
     }

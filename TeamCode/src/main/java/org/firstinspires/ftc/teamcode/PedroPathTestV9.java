@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 import com.bylazar.configurables.annotations.Configurable;
 import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
@@ -12,9 +13,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.Mechanism.Fling_Logic;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "PedroPathTestV7", group = "Autonomous")
+@Autonomous(name = "PedroPathTestV9", group = "Autonomous")
 @Configurable
-public class PedroPathTestV7 extends OpMode{
+public class PedroPathTestV9 extends OpMode{
     private Follower follower;
     private Timer pathTimer, opModeTimer;
 
@@ -30,7 +31,14 @@ public class PedroPathTestV7 extends OpMode{
         DRIVE_STARTPOS_SHOOTPOS,
         SHOOT_PRELOAD,
         DRIVE_SHOOTPOS_PARK,
-        DRIVE_SHOOT
+        DRIVE_SHOOT,
+        PATH4,
+        PATH5,
+        PATH6,
+        PATH7,
+        PATH8,
+        PATH9,
+
 
     }
 
@@ -40,10 +48,20 @@ public class PedroPathTestV7 extends OpMode{
     private final Pose shootPoseL = new Pose(60,84, Math.toRadians(180));
     private final Pose ballPoseL = new Pose(12, 84, Math.toRadians(180));
     private final Pose shootingPoseL = new Pose(36,108,Math.toRadians(135));
-
+    private final Pose paths4 = new Pose(60,60.6,Math.toRadians(180));
+    private final Pose point1 = new Pose(33.031, 62.243);
+    private final Pose paths5 = new Pose(14,59,Math.toRadians(190));
+    private final Pose point2 = new Pose(27.141, 73.624);
+    private final Pose paths6 = new Pose(36,108,Math.toRadians(135));
+    private final Pose point3 = new Pose(26.506, 60.607);
+    private final Pose paths7 = new Pose(60.3,35,Math.toRadians(180));
+    private final Pose paths8 = new Pose(15.3,34.9,Math.toRadians(180));
+    private final  Pose point4 = new Pose(9.312, 60.258);
+    private final Pose paths9 = new Pose(36,108,Math.toRadians(135));
     // declare variable name object
+
     // make sure paths are chained together
-    private PathChain driveStartLtoShootL,driveShootLtoBallL, driveBalltoShootingPoseL;
+    private PathChain driveStartLtoShootL,driveShootLtoBallL, driveBalltoShootingPoseL, driveShootingPoseLtopaths4, drivepaths4topaths5, drivepaths5topaths6, drivepaths6topaths7, drivepaths7topaths8, drivepaths8topaths9;
     public void buildPaths(){
         // put in coordinates for starting pose then for the ending pose
         driveStartLtoShootL = follower.pathBuilder()
@@ -57,6 +75,32 @@ public class PedroPathTestV7 extends OpMode{
         driveBalltoShootingPoseL = follower.pathBuilder()
                 .addPath(new BezierLine(ballPoseL, shootingPoseL))
                 .setLinearHeadingInterpolation(ballPoseL.getHeading(),shootingPoseL.getHeading())
+                .build();
+        driveShootingPoseLtopaths4 = follower.pathBuilder()
+                .addPath(new BezierLine(shootingPoseL, paths4))
+                .setLinearHeadingInterpolation(shootPoseL.getHeading(),paths4.getHeading())
+                .build();
+        drivepaths4topaths5 = follower.pathBuilder()
+                .addPath(new BezierCurve(paths4,point1, paths5)
+                )
+                .setLinearHeadingInterpolation(paths4.getHeading(),paths5.getHeading())
+                .build();
+        drivepaths5topaths6 = follower.pathBuilder()
+                .addPath(new BezierCurve(paths5,point2, paths6)
+                )
+                .setLinearHeadingInterpolation(paths5.getHeading(),paths6.getHeading())
+                .build();
+        drivepaths6topaths7 = follower.pathBuilder()
+                .addPath(new BezierCurve(paths6, point3, paths7))
+                .setLinearHeadingInterpolation(paths6.getHeading(),paths7.getHeading())
+                .build();
+        drivepaths7topaths8 = follower.pathBuilder()
+                .addPath(new BezierLine(paths7, paths8))
+                .setLinearHeadingInterpolation(paths7.getHeading(),paths8.getHeading())
+                .build();
+        drivepaths8topaths9 = follower.pathBuilder()
+                .addPath(new BezierCurve(paths8, point4, paths9))
+                .setLinearHeadingInterpolation(paths8.getHeading(),paths9.getHeading())
                 .build();
 
     }
@@ -100,10 +144,64 @@ public class PedroPathTestV7 extends OpMode{
                 break;
             case DRIVE_SHOOT:
                 if (!follower.isBusy()) {
-                    if (shooter.isBusy())
+                    if (shooter.isBusy()) {
+                        follower.followPath(driveShootingPoseLtopaths4, true);
                         telemetry.addLine("Done path 3 ");
+                    }
                 }
                 break;
+            case PATH4:
+                if (!follower.isBusy()) {
+                    if (shooter.isBusy()) {
+                        follower.followPath(drivepaths4topaths5, true);
+                        telemetry.addLine("Done path 4 ");
+                    }
+
+                }
+                break;
+            case PATH5:
+                if (!follower.isBusy()) {
+                    if (shooter.isBusy()) {
+                        follower.followPath(drivepaths5topaths6, true);
+                        telemetry.addLine("Done path 5 ");
+                    }
+
+                }
+                break;
+            case PATH6:
+                if (!follower.isBusy()) {
+                    if (shooter.isBusy()) {
+                        follower.followPath(drivepaths6topaths7, true);
+                        telemetry.addLine("Done path 6 ");
+                    }
+
+                }
+                break;
+            case PATH7:
+                if (!follower.isBusy()) {
+                    if (shooter.isBusy()) {
+                        follower.followPath(drivepaths7topaths8, true);
+                        telemetry.addLine("Done path 7 ");
+                    }
+
+                }
+                break;
+            case PATH8:
+                if (!follower.isBusy()) {
+                    if (shooter.isBusy()){
+                        follower.followPath(drivepaths8topaths9, true);
+                    telemetry.addLine("Done path 8 ");
+                 }
+                }
+                break;
+            case PATH9:
+                if (!follower.isBusy()) {
+                    if (shooter.isBusy()) {
+                        telemetry.addLine("Done path 9 ");
+                    }
+
+                }
+
 
             default:
                 telemetry.addLine("no state commanded");

@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Mechanism;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -9,93 +8,82 @@ public class Fling_Logic {
     private DcMotor LLaunch, RLaunch;
     private DcMotor intakeMotor;
 
-    private ElapsedTime stateTimer = new ElapsedTime();
-    private enum FlingState{
-        DELAY,
-        IDLE,
-        SPIN_UP,
-        END
+    private ElapsedTime timer = new ElapsedTime();
 
+    private enum FlingState {
+        START_FLING,   // first action: arms up
+        IDLE,          // waiting for paths
+        LOWER_ARMS     // lower arms at shooting positions
     }
 
-    private FlingState flingState;
+    private FlingState state;
 
+    private final double ARMS_UP = 1.0;
+    private final double ARMS_DOWN = -1.0;
+    private final double ARMS_TIME = 0.5; // time to fully move arms
+    private final double INTAKE_POWER = 1;
 
-    // -------- Intake (Spin Up) Constants --------
-    private double INTAKE_ON = -1.0;
-    private double INTAKE_OFF = 0.0;
-    private double INTAKE_REVERSE = 1.0;
-    private double INTAKE_TIME = 0.2; // keeps track of time
-
-    // --------- Launch Logic ---------
-    private double ARMS_DOWN = -1.0;
-    private double  ARMS_UP = 1.0;
-    private double ARMS_TIME = 1; // TO DO: test the time
-
-    public void init(HardwareMap hwMap){
+    public void init(HardwareMap hwMap) {
         LLaunch = hwMap.get(DcMotor.class, "LLaunch");
         RLaunch = hwMap.get(DcMotor.class, "RLaunch");
         intakeMotor = hwMap.get(DcMotor.class, "intake_motor");
 
-        // tune PIDF
-        // run using pinpoint
-
-        flingState = FlingState.DELAY;
-
+        // start arms in neutral
         LLaunch.setPower(0);
         RLaunch.setPower(0);
-        intakeMotor.setPower(0);
+        intakeMotor.setPower(0); // intake can run always
 
+        state = FlingState.START_FLING;
+        timer.reset();
     }
 
     public void update() {
-        switch (flingState) {
-            case DELAY:
-                if (stateTimer.seconds() > 1) {
-                    stateTimer.reset();
-                    flingState = FlingState.IDLE;
+        switch (state) {
+            case START_FLING:
+                // immediately fling arms up
+                LLaunch.setPower(ARMS_UP);
+                RLaunch.setPower(ARMS_DOWN);
+
+                if (timer.seconds() > ARMS_TIME) {
+                    // done flinging
+                    LLaunch.setPower(0);
+                    RLaunch.setPower(0);
+                    state = FlingState.IDLE;
+                    timer.reset();
                 }
                 break;
+
             case IDLE:
-
-                    LLaunch.setPower(ARMS_UP);
-                    RLaunch.setPower(ARMS_DOWN);
-                    if (stateTimer.seconds() > 1) {
-                        stateTimer.reset();
-                        flingState = FlingState.SPIN_UP;
-
-
-
-                }
-                break;
-            case SPIN_UP:
+                // just keep intake running
                 intakeMotor.setPower(1);
-                stateTimer.reset();
-                flingState = FlingState.END;
                 break;
-                // ADD REVERSE if there are more or if there exists more using distance sensor
-            case END:
+
+            case LOWER_ARMS:
                 LLaunch.setPower(ARMS_DOWN);
                 RLaunch.setPower(ARMS_UP);
-                if (stateTimer.seconds() > ARMS_TIME) {
-                    LLaunch.setPower(ARMS_DOWN);
-                    RLaunch.setPower(ARMS_UP);
 
-                    stateTimer.reset();
+                if (timer.seconds() > ARMS_TIME) {
+                    LLaunch.setPower(0);
+                    RLaunch.setPower(0);
+                    state = FlingState.IDLE;
+                    timer.reset();
                 }
                 break;
-
-
         }
-
-
-
     }
+
+    // call this when you reach shootingPoseL, PATH6, or PATH9
+    public void lowerArms() {
+        state = FlingState.LOWER_ARMS;
+        timer.reset();
+    }
+    public void setArmsUp() {
+        LLaunch.setPower(ARMS_UP);
+        RLaunch.setPower(ARMS_DOWN);
+    }
+
 
     public boolean isBusy() {
-        return flingState != FlingState.DELAY;
+        return state != FlingState.IDLE;
     }
-
-
-
 }
