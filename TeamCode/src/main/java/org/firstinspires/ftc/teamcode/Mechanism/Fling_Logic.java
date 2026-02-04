@@ -57,25 +57,21 @@ public class Fling_Logic {
                 }
                 break;
             case IDLE:
-                if (ARMS_DOWN < -0) {
+
                     LLaunch.setPower(ARMS_UP);
                     RLaunch.setPower(ARMS_DOWN);
                     if (stateTimer.seconds() > 1) {
                         stateTimer.reset();
                         flingState = FlingState.SPIN_UP;
-                    }
+
 
 
                 }
                 break;
             case SPIN_UP:
-                intakeMotor.setPower(-1);
-                if (stateTimer.seconds() > INTAKE_TIME) {
-                    intakeMotor.setPower(INTAKE_ON);
-
-                    stateTimer.reset();
-                    flingState = FlingState.END;
-                }
+                intakeMotor.setPower(1);
+                stateTimer.reset();
+                flingState = FlingState.END;
                 break;
                 // ADD REVERSE if there are more or if there exists more using distance sensor
             case END:
@@ -97,7 +93,7 @@ public class Fling_Logic {
     }
 
     public boolean isBusy() {
-        return flingState != FlingState.IDLE;
+        return flingState != FlingState.DELAY;
     }
 
 

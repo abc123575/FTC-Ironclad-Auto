@@ -12,9 +12,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.Mechanism.Fling_Logic;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "PedroPathTestV6", group = "Autonomous")
+@Autonomous(name = "PedroPathTestV7", group = "Autonomous")
 @Configurable
-public class PedroPathTestV6 extends OpMode{
+public class PedroPathTestV7 extends OpMode{
     private Follower follower;
     private Timer pathTimer, opModeTimer;
 
@@ -65,7 +65,7 @@ public class PedroPathTestV6 extends OpMode{
             case DRIVE_STARTPOS_SHOOTPOS:
                 if (!follower.isBusy()){
 
-                    if (shooter.isBusy()) {
+                    if (!shooter.isBusy()) {
                         follower.followPath(driveStartLtoShootL, true);
                         setPathstate(PathState.SHOOT_PRELOAD); //reset timer and make new state
                         break;
@@ -76,7 +76,7 @@ public class PedroPathTestV6 extends OpMode{
             case SHOOT_PRELOAD:
                 // check if follower has done path one
                 if (!follower.isBusy()){
-                    if (shooter.isBusy()) {
+                    if (!shooter.isBusy()) {
                         follower.followPath(driveShootLtoBallL, true);
                         telemetry.addLine("Done path 1");
                         setPathstate(PathState.DRIVE_SHOOTPOS_PARK);
@@ -88,7 +88,7 @@ public class PedroPathTestV6 extends OpMode{
             // check iss follower done it's path and if that 5 seconds has elapsed
             case DRIVE_SHOOTPOS_PARK:
                 if (!follower.isBusy()){
-                    if (shooter.isBusy()) {
+                    if (!shooter.isBusy()) {
                         follower.followPath(driveBalltoShootingPoseL, true);
                         telemetry.addLine("Done path2 ");
                         setPathstate(PathState.DRIVE_SHOOT);
@@ -99,7 +99,7 @@ public class PedroPathTestV6 extends OpMode{
                 break;
             case DRIVE_SHOOT:
                 if (!follower.isBusy()) {
-                    if (shooter.isBusy())
+                    if (!shooter.isBusy())
                         telemetry.addLine("Done path 3 ");
                 }
                 break;

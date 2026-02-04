@@ -14,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 @TeleOp(name = "TELEOP_Final", group = "Drive")
 public class TELEOP_Final extends OpMode {
     // --- Pivot Servo ---
-    private Servo armServo;
+    private CRServo armServo;
 
     // --- Drive Motors ---
     private DcMotor FLmotor, FRmotor, BLmotor, BRmotor;
@@ -32,8 +32,6 @@ public class TELEOP_Final extends OpMode {
     private boolean fieldCentric = false;
     private boolean backPrev = false;
     private boolean yPrev = false;
-    private CRServo torque1;
-    private CRServo torque2;
 
     private static final double DEADBAND = 0.05;
     private static final double ROT_SCALE = 0.8;
@@ -60,10 +58,7 @@ public class TELEOP_Final extends OpMode {
         FRmotor.setDirection(DcMotorSimple.Direction.FORWARD);
         BRmotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        torque1 = hardwareMap.get(CRServo.class, "servo1");
-        torque2 = hardwareMap.get(CRServo.class, "servo2");
-        armServo = hardwareMap.get(Servo.class, "testServo");
-        armServo.setPosition(servoPos);
+        armServo = hardwareMap.get(CRServo.class, "testServo");
 
 
 
@@ -170,19 +165,14 @@ public class TELEOP_Final extends OpMode {
             LLaunch.setPower(0);
             RLaunch.setPower(0);
         }
-        if (gamepad1.right_bumper) {
-            servoPos += SERVO_SPEED;
+        if (gamepad1.a){
+            armServo.setPower(SERVO_SPEED);
+        } else if (gamepad1.b){
+            armServo.setPower(-SERVO_SPEED);
+        } else {
+            armServo.setPower(0);
         }
 
-// Move backward while holding left bumper
-        if (gamepad1.left_bumper) {
-            servoPos -= SERVO_SPEED;
-        }
-
-        // Clamp so it never goes past servo limits
-        servoPos = Math.max(0.0, Math.min(1.0, servoPos));
-
-        armServo.setPosition(servoPos);
 
         telemetry.addData("Servo Pos", servoPos);
         telemetry.update();
@@ -208,13 +198,7 @@ public class TELEOP_Final extends OpMode {
 
         // Gamepad 2: Kick Stand
 
-        if (gamepad1.a) {
-            torque1.setPower(-1.0);  // left
-            torque2.setPower(-1.0);  // left
-        } else {
-            torque1.setPower(0.0);
-            torque2.setPower(0.0);
-        }
+
 
         // --- Telemetry ---
         telemetry.addLine("Drive:");
